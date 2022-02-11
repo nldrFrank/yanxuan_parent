@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yanxuan_ad_api" />
+        <module name="yanxuan_ad_service" />
+        <module name="yanxuan_common" />
+        <module name="yanxuan_dao" />
+        <module name="yanxuan_goods_api" />
+        <module name="yanxuan_goods_import" />
+        <module name="yanxuan_goods_service" />
+        <module name="yanxuan_manager_server" />
+        <module name="yanxuan_model" />
+        <module name="yanxuan_portal_server" />
+        <module name="yanxuan_search_api" />
+        <module name="yanxuan_search_server" />
+        <module name="yanxuan_search_service" />
+        <module name="yanxuan_seller_server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
+  </component>
+</project>

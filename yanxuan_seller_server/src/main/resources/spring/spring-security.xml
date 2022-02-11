@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--设置不进行权限检查的访问路径-->
+    <http security="none" pattern="/css/**" />
+    <http security="none" pattern="/img/**" />
+    <http security="none" pattern="/images/**" />
+    <http security="none" pattern="/js/**" />
+    <http security="none" pattern="/plugins/**" />
+    <http security="none" pattern="/pages/**" />
+    <http security="none" pattern="/login.html**" />
+    <http security="none" pattern="/seller_in.html**" />
+    <http security="none" pattern="/seller**" />
+
+    <!--设置权限检查-->
+    <http use-expressions="false">
+        <!--所有请求都进行需要具有ROLE_ADMIN权限-->
+        <intercept-url pattern="/**" access="ROLE_USER" />
+        <!--开启登录表单-->
+        <form-login login-page="/login.html" default-target-url="/index.html" always-use-default-target="true" authentication-failure-url="/login.html" />
+        <!--开启注销-->
+        <logout logout-success-url="/login.html" invalidate-session="true" delete-cookies="JSESSIONID"/>
+        <!--关闭csrf-->
+        <csrf disabled="true" />
+        <!--fix 'X-Frame-Options' to 'deny'-->
+        <headers>
+            <frame-options policy="SAMEORIGIN" />
+        </headers>
+    </http>
+
+    <!--认证管理器-->
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="bCryptPasswordEncoder" />
+            <!--<user-service>
+                <user name="root" password="root" authorities="ROLE_ADMIN"/>
+            </user-service>-->
+        </authentication-provider>
+    </authentication-manager>
+    <!--spring容器管理自定义的UserDetailsServiceImpl-->
+    <beans:bean id="userDetailsService" class="com.itjiguang.yanxuan.seller.service.UserDetailsServiceImpl">
+        <!--setter注入-->
+        <beans:property name="accountService" ref="accountService"/>
+    </beans:bean>
+    <!--引用dubbo远程服务-->
+    <dubbo:reference id="accountService" interface="com.itjiguang.yanxuan.seller.api.IAccountService" />
+    <!--spring容器管理BCryptPasswordEncoder-->
+    <beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+</beans:beans>
